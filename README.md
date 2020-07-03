@@ -16,6 +16,7 @@ Initially, the algorithms added to the library perform data clustering.
     ├── algoritms          <- Trained and serialized models, model predictions, or model summaries.
     │   ├── __init__.py    <- Makes algoritms a Python module.
     │   └── denstream      <- DenStream algorithm folder.
+    │   └── sostream       <- SOStream algorithm folder.
     │
     ├── metrics            <- Scikit-learn purity, accuracy, recall and f1-score metrics.
     │   ├── __init__.py    <- Makes metrics a Python module.
