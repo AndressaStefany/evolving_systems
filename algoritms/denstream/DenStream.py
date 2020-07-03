@@ -7,7 +7,7 @@ import sys
 import numpy as np
 from sklearn.utils import check_array
 from copy import copy
-from denstream.MicroCluster import MicroCluster
+from algoritms.denstream.MicroCluster import MicroCluster
 from math import ceil
 from sklearn.cluster import DBSCAN
 
