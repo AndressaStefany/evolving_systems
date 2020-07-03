@@ -7,8 +7,8 @@ setup(
     author='Andressa Stéfany S de Oliveira',
     author_email='astefanysoliveira@gmail.com',
     description='Evolving Systems',
-    package_dir={'': 'algoritms'},
-    packages=find_packages("algoritms"),
+    package_dir={'': ''},
+    packages=find_packages(),
     classifiers=[
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
