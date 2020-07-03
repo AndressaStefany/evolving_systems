@@ -1,5 +1,4 @@
-# Evolving Systems Library 
-==============================
+# Evolving Systems Library
 
 Python implementation of evolving algorithms.
 
@@ -9,7 +8,6 @@ This is a library project to facilitate the use of evolutionary algorithms.
 Initially, the algorithms added to the library perform data clustering.
 
 ## Project Organization
-------------
 
     ├── LICENSE
     │
@@ -27,8 +25,6 @@ Initially, the algorithms added to the library perform data clustering.
     │
     └── setup.py           <- makes project pip installable.
 
-
---------
 
 ## Would you like to contribute?
 <p><small>The project is still under construction, so if you like it enough to collaborate, just let us know or simply create a Pull Request.</small></p>
