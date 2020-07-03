@@ -7,7 +7,6 @@ setup(
     author='Andressa Stéfany S de Oliveira',
     author_email='astefanysoliveira@gmail.com',
     description='Evolving Systems',
-    package_dir={'': ''},
     packages=find_packages(),
     classifiers=[
         'Programming Language :: Python :: 3',
