@@ -23,7 +23,7 @@ Initially, the algorithms added to the library perform data clustering.
     │
     ├── notebooks examples <- Jupyter notebooks with usage examples.
     │
-    └── setup.py           <- makes project pip installable.
+    └── setup.py           <- Makes project pip installable.
 
 
 ## Would you like to contribute?
