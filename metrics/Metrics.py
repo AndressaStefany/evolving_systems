@@ -18,7 +18,7 @@ def recall(y_true, y_pred):
     return recall_score(y_true, y_pred, average='micro')
 
 
-def f1_score(y_true, y_pred):
+def f1(y_true, y_pred):
     return f1_score(y_true, y_pred, average='micro')
 
 
