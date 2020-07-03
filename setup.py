@@ -9,7 +9,6 @@ setup(
     description='Evolving Systems',
     package_dir={'': 'algoritms'},
     packages=find_packages("algoritms"),
-    install_requires=['numpy >= 1.11.1', 'matplotlib >= 1.5.1'],
     classifiers=[
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',

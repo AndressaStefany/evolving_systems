@@ -7,7 +7,7 @@ import sys
 import numpy as np
 from sklearn.utils import check_array
 from copy import copy
-from benchmarks.denstream.MicroCluster import MicroCluster
+from denstream.MicroCluster import MicroCluster
 from math import ceil
 from sklearn.cluster import DBSCAN
 
@@ -130,7 +130,6 @@ class DenStream:
 
         for sample, weight in zip(X, sample_weight):
             self._partial_fit(sample, weight)
-
 
     def predict(self, X):
         p_micro_cluster_centers = np.array([p_micro_cluster.center() for
