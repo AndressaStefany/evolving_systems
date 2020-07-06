@@ -65,9 +65,10 @@ class SOStream_feedback:
                 updateCluster(winner_micro_cluster, vt,
                               self.alpha, winner_neighborhood)
                 self.feedback = np.where(np.equal(old_centroid, winner_micro_cluster.centroid),
-                                         winner_micro_cluster.centroid.tolist(),
+                                         winner_micro_cluster.centroidtolist(),
                                          self.feedback)
                 self.feedback = self.feedback.tolist()
+                self.feedback.append(winner_micro_cluster.centroid.tolist())
             else:
                 new_M.append(newCluster(vt))
                 self.feedback.append(vt.tolist())
@@ -78,8 +79,8 @@ class SOStream_feedback:
                 for deleted_cluster in deleted_clusters:
                     new_M.remove(deleted_cluster)
                     if merged_cluster is not None:
-                        self.feedback = np.where(np.equal(merged_cluster.centroid, deleted_cluster.centroid),
-                                                 merged_cluster.centroid.tolist(),
+                        self.feedback = np.where(np.equal(self.feedback, deleted_cluster.centroid),
+                                                 merged_cluster.centroidtolist(),
                                                  self.feedback)
                         self.feedback = self.feedback.tolist()
                 if merged_cluster is not None:
