@@ -2,7 +2,7 @@
 Code downloaded from:
 https://github.com/ruteee/SOStream
 '''
-
+import numpy as np
 from algoritms.sostream.find_neighbors import find_neighbors
 from algoritms.sostream.find_overlap import find_overlap
 from algoritms.sostream.merge_clusters import merge_clusters
@@ -74,8 +74,10 @@ class SOStream_feedback:
                 for deleted_cluster in deleted_clusters:
                     new_M.remove(deleted_cluster)
                     if merged_cluster is not None:
-                        self.feedback = [merged_cluster.centroid if x ==
-                                         deleted_cluster.centroid else x for x in self.feedback]
+                        self.feedback = np.where(np.equal(self.feedback, deleted_cluster.centroid),
+                                                 merged_cluster.centroid,
+                                                 self.feedback)
+                        self.feedback = self.feedback.tolist()
                 if merged_cluster is not None:
                     new_M.append(merged_cluster)
         else:
