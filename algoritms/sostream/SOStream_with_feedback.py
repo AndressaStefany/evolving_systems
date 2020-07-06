@@ -51,7 +51,7 @@ class SOStream_feedback:
         self.feedback = []
 
     def fit_predict(self, X):
-        for r in X.values:
+        for r in X:
             self.process(r)
 
     def process(self, vt):
