@@ -63,10 +63,10 @@ class SOStream_feedback:
             if dist(vt, winner_micro_cluster.centroid) < winner_micro_cluster.radius:
                 updateCluster(winner_micro_cluster, vt,
                               self.alpha, winner_neighborhood)
-                self.feedback.append(winner_micro_cluster.centroid)
+                self.feedback.append(winner_micro_cluster.centroid.tolist())
             else:
                 new_M.append(newCluster(vt))
-                self.feedback.append(vt)
+                self.feedback.append(vt.tolist())
             overlap = find_overlap(winner_micro_cluster, winner_neighborhood)
             if len(overlap) > 0:
                 merged_cluster, deleted_clusters = merge_clusters(
@@ -82,6 +82,6 @@ class SOStream_feedback:
                     new_M.append(merged_cluster)
         else:
             new_M.append(newCluster(vt))
-            self.feedback.append(vt)
+            self.feedback.append(vt.tolist())
         self.M.append(new_M)
     pass
