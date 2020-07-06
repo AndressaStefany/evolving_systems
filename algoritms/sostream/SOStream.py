@@ -3,12 +3,12 @@ Code downloaded from:
 https://github.com/ruteee/SOStream
 '''
 
-from find_neighbors import find_neighbors
-from find_overlap import find_overlap
-from merge_clusters import merge_clusters
-from new_cluster import newCluster
-from update_cluster import updateCluster
-from utils import min_dist, dist
+from algoritms.sostream.find_neighbors import find_neighbors
+from algoritms.sostream.find_overlap import find_overlap
+from algoritms.sostream.merge_clusters import merge_clusters
+from algoritms.sostream.new_cluster import newCluster
+from algoritms.sostream.update_cluster import updateCluster
+from algoritms.sostream.utils import min_dist, dist
 
 
 class SOStream:
