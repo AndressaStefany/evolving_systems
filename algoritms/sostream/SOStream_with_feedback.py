@@ -57,36 +57,50 @@ class SOStream_feedback:
     def process(self, vt):
         winner_micro_cluster = min_dist(vt, self.M[-1])
         new_M = self.M[-1].copy()
+
         if len(new_M) >= self.min_pts:
             winner_neighborhood = find_neighbors(
                 winner_micro_cluster, self.min_pts, new_M)
+
             if dist(vt, winner_micro_cluster.centroid) < winner_micro_cluster.radius:
-                old_centroid = winner_micro_cluster.centroid
+                old_centroid = winner_micro_cluster.centroid.tolist()
+
                 updateCluster(winner_micro_cluster, vt,
                               self.alpha, winner_neighborhood)
-                self.feedback = np.where(np.equal(old_centroid, winner_micro_cluster.centroid),
-                                         winner_micro_cluster.centroidtolist(),
+
+                self.feedback = np.where(np.equal(self.feedback, old_centroid),
+                                         winner_micro_cluster.centroid.tolist(),
                                          self.feedback)
+                print(type(self.feedback))
                 self.feedback = self.feedback.tolist()
                 self.feedback.append(winner_micro_cluster.centroid.tolist())
+
             else:
                 new_M.append(newCluster(vt))
                 self.feedback.append(vt.tolist())
+
             overlap = find_overlap(winner_micro_cluster, winner_neighborhood)
+
             if len(overlap) > 0:
                 merged_cluster, deleted_clusters = merge_clusters(
                     winner_micro_cluster, overlap, self.merge_threshold)
+
                 for deleted_cluster in deleted_clusters:
                     new_M.remove(deleted_cluster)
+
                     if merged_cluster is not None:
-                        self.feedback = np.where(np.equal(self.feedback, deleted_cluster.centroid),
-                                                 merged_cluster.centroidtolist(),
+                        self.feedback = np.where(np.equal(self.feedback, deleted_cluster.centroid.tolist()),
+                                                 merged_cluster.centroid.tolist(),
                                                  self.feedback)
+                        print(type(self.feedback))
                         self.feedback = self.feedback.tolist()
+
                 if merged_cluster is not None:
                     new_M.append(merged_cluster)
+
         else:
             new_M.append(newCluster(vt))
             self.feedback.append(vt.tolist())
+
         self.M.append(new_M)
     pass
