@@ -63,16 +63,26 @@ class SOStream_feedback:
                 winner_micro_cluster, self.min_pts, new_M)
 
             if dist(vt, winner_micro_cluster.centroid) < winner_micro_cluster.radius:
-                old_centroid = winner_micro_cluster.centroid
+                old_centroid_winner = winner_micro_cluster.centroid
+                old_centroids = [c.centroid for c in winner_neighborhood]
 
                 updateCluster(winner_micro_cluster, vt,
                               self.alpha, winner_neighborhood)
 
-                self.feedback = np.where(np.equal(self.feedback, old_centroid),
+                # update centroid in self.feedback
+                self.feedback.append(winner_micro_cluster.centroid.tolist())
+                self.feedback = np.where(np.equal(self.feedback, old_centroid_winner),
                                          winner_micro_cluster.centroid.tolist(),
                                          self.feedback)
-                self.feedback = self.feedback.tolist()
-                self.feedback.append(winner_micro_cluster.centroid.tolist())
+                new_centroids = [c.centroid for c in winner_neighborhood]
+                for i in range(0, len(old_centroids)):
+                    self.feedback = np.where(self.feedback == old_centroids[i],
+                                             new_centroids[i],
+                                             self.feedback)
+                try:
+                    self.feedback = self.feedback.tolist()
+                except:
+                    pass
 
             else:
                 new_M.append(newCluster(vt))
