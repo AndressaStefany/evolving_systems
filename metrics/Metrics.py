@@ -23,6 +23,7 @@ def f1(y_true, y_pred):
 
 
 def silhouette(X, y_pred):
+    # For when the labels are not known and the clusters are well defined
     return silhouette_score(X, y_pred, metric='euclidean')
 
 
