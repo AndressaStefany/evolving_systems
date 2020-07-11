@@ -1,5 +1,5 @@
 import numpy as np
-from sklearn.metrics import cluster, precision_score, recall_score, f1_score, calinski_harabaz_score
+from sklearn.metrics import cluster, precision_score, recall_score, f1_score, calinski_harabaz_score, silhouette_score, adjusted_rand_score
 
 
 def purity(y_true, y_pred):
@@ -20,6 +20,14 @@ def recall(y_true, y_pred):
 
 def f1(y_true, y_pred):
     return f1_score(y_true, y_pred, average='micro')
+
+
+def silhouette(X, y_pred):
+    return silhouette_score(X, y_pred, metric='euclidean')
+
+
+def adjusted_rand(y_true, y_pred):
+    return adjusted_rand_score(y_true, y_pred)
 
 
 def ch_score(X, y_pred):
