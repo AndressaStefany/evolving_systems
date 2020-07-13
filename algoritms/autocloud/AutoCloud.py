@@ -28,7 +28,7 @@ class AutoCloud:
             self.run(r)
 
     def mergeClouds(self):
-            i = 0
+        i = 0
         while(i < len(AutoCloud.listIntersection)-1):
             merge = False
             j = i+1
@@ -36,7 +36,7 @@ class AutoCloud:
                 # print("i",i,"j",j,"l",np.size(AutoCloud.listIntersection),"m",np.size(AutoCloud.matrixIntersection),"c",np.size(AutoCloud.c))
                 if(AutoCloud.listIntersection[i] == 1 and AutoCloud.listIntersection[j] == 1):
                     AutoCloud.matrixIntersection[i,
-                        j] = AutoCloud.matrixIntersection[i, j] + 1;
+                                                 j] = AutoCloud.matrixIntersection[i, j] + 1
                 nI = AutoCloud.c[i].n
                 nJ = AutoCloud.c[j].n
                 meanI = AutoCloud.c[i].mean
@@ -49,7 +49,8 @@ class AutoCloud:
                     # update values
                     n = nI + nJ - nIntersc
                     mean = ((nI * meanI) + (nJ * meanJ))/(nI + nJ)
-                    variance = ((nI - 1) * varianceI + (nJ - 1) * varianceJ)/(nI + nJ - 2)
+                    variance = ((nI - 1) * varianceI + (nJ - 1)
+                                * varianceJ)/(nI + nJ - 2)
                     newCloud = DataCloud(mean)
                     newCloud.updateDataCloud(n, mean, variance)
                     # atualizando lista de interseção
@@ -76,7 +77,7 @@ class AutoCloud:
                     M1[:, i] = col
                     # atualizando linha
                     M1[i, :] = lin
-                    M1[i, i + 1: j] = M0[i, i + 1: j] + M0[i + 1: j, j].T;
+                    M1[i, i + 1: j] = M0[i, i + 1: j] + M0[i + 1: j, j].T
                     AutoCloud.matrixIntersection = M1
                 j += 1
             if(merge):
@@ -84,45 +85,48 @@ class AutoCloud:
             else:
                 i += 1
 
-    def run(self,X):
-        AutoCloud.listIntersection = np.zeros((np.size(AutoCloud.c)),dtype=int)
-        if AutoCloud.k==1:
-            AutoCloud.c[0]=DataCloud(X)
+    def run(self, X):
+        AutoCloud.listIntersection = np.zeros(
+            (np.size(AutoCloud.c)), dtype=int)
+        if AutoCloud.k == 1:
+            AutoCloud.c[0] = DataCloud(X)
             AutoCloud.classIndex.append(0)
-        elif AutoCloud.k==2:
+        elif AutoCloud.k == 2:
             AutoCloud.c[0].addDataClaud(X)
             AutoCloud.classIndex.append(0)
-        elif AutoCloud.k>=3:
-            i=0
+        elif AutoCloud.k >= 3:
+            i = 0
             createCloud = True
-            AutoCloud.alfa = np.zeros((np.size(AutoCloud.c)),dtype=float)
+            AutoCloud.alfa = np.zeros((np.size(AutoCloud.c)), dtype=float)
             for data in AutoCloud.c:
-                n= data.n +1
+                n = data.n + 1
                 mean = ((n-1)/n)*data.mean + (1/n)*X
-                variance = ((n-1)/n)*data.variance +(1/n)*((np.linalg.norm(X-mean))**2)
+                variance = ((n-1)/n)*data.variance + (1/n) * \
+                    ((np.linalg.norm(X-mean))**2)
                 eccentricity = (1/n)+((mean-X).T.dot(mean-X))/(n*variance)
                 typicality = 1 - eccentricity
                 norm_eccentricity = eccentricity/2
                 norm_typicality = typicality/(AutoCloud.k-2)
                 data.eccAn = eccentricity
-                if(norm_eccentricity<=(AutoCloud.m**2 +1)/(2*n)):
-                    data.updateDataCloud(n,mean,variance)
+                if(norm_eccentricity <= (AutoCloud.m**2 + 1)/(2*n)):
+                    data.updateDataCloud(n, mean, variance)
                     AutoCloud.alfa[i] = norm_typicality
-                    createCloud= False
-                    AutoCloud.listIntersection.itemset(i,1)
+                    createCloud = False
+                    AutoCloud.listIntersection.itemset(i, 1)
                 else:
                     AutoCloud.alfa[i] = 0
-                    AutoCloud.listIntersection.itemset(i,0)
-                i+=1
-            
+                    AutoCloud.listIntersection.itemset(i, 0)
+                i += 1
+
             if(createCloud):
-                AutoCloud.c = np.append(AutoCloud.c,DataCloud(X))
-                AutoCloud.listIntersection = np.insert(AutoCloud.listIntersection,i,1)
-                AutoCloud.matrixIntersection = np.pad(AutoCloud.matrixIntersection, ((0,1),(0,1)), 'constant', constant_values=(0)) 
+                AutoCloud.c = np.append(AutoCloud.c, DataCloud(X))
+                AutoCloud.listIntersection = np.insert(
+                    AutoCloud.listIntersection, i, 1)
+                AutoCloud.matrixIntersection = np.pad(
+                    AutoCloud.matrixIntersection, ((0, 1), (0, 1)), 'constant', constant_values=(0))
             self.mergeClouds()
-            AutoCloud.relevanceList = AutoCloud.alfa /np.sum(AutoCloud.alfa)
+            AutoCloud.relevanceList = AutoCloud.alfa / np.sum(AutoCloud.alfa)
             classIndex = np.argmax(AutoCloud.relevanceList)
             AutoCloud.classIndex.append(classIndex)
 
-        
-        AutoCloud.k=AutoCloud.k+1
+        AutoCloud.k = AutoCloud.k+1
