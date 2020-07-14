@@ -1,5 +1,5 @@
 '''
-Code downloaded from:
+(Adapted) Code downloaded from:
 https://github.com/issamemari/DenStream
 '''
 
@@ -10,7 +10,7 @@ from copy import copy
 from algoritms.denstream.MicroCluster import MicroCluster
 from math import ceil
 from sklearn.cluster import DBSCAN
-from sklearn.base.BaseEstimator import BaseEstimator
+from sklearn.base import BaseEstimator
 
 
 class DenStream(BaseEstimator):
@@ -92,12 +92,9 @@ class DenStream(BaseEstimator):
             self._partial_fit(sample, weight)
         return self
 
-    # def score(self, X, y, sample_weight=None):
+    def score(self, X, y, sample_weight=None):
         """
-        Return the mean accuracy on the given test data and labels.
-        In multi-label classification, this is the subset accuracy
-        which is a harsh metric since you require for each sample that
-        each label set be correctly predicted.
+        Return the Adjusted Rand Score on the given test data and labels.
         Parameters
         ----------
         X : array-like of shape (n_samples, n_features)
@@ -109,10 +106,10 @@ class DenStream(BaseEstimator):
         Returns
         -------
         score : float
-            Mean accuracy of self.predict(X) wrt. y.
+            Adjusted Rand score of self.predict(X) wrt. y.
         """
-        # from sklearn.metrics import accuracy_score
-        # return accuracy_score(y, self.predict(X), sample_weight=sample_weight)
+        from sklearn.metrics import adjusted_rand_score
+        return adjusted_rand_score(y, self.fit_predict(X))
 
     def fit_predict(self, X, y=None, sample_weight=None):
         self.fit(X, y, sample_weight)
