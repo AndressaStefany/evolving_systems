@@ -10,9 +10,10 @@ from copy import copy
 from algoritms.denstream.MicroCluster import MicroCluster
 from math import ceil
 from sklearn.cluster import DBSCAN
+from sklearn.base.BaseEstimator import BaseEstimator
 
 
-class DenStream:
+class DenStream(BaseEstimator):
 
     def __init__(self, lambd=1, eps=1, beta=2, mu=2):
         """
@@ -91,7 +92,7 @@ class DenStream:
             self._partial_fit(sample, weight)
         return self
 
-    def score(self, X, y, sample_weight=None):
+    # def score(self, X, y, sample_weight=None):
         """
         Return the mean accuracy on the given test data and labels.
         In multi-label classification, this is the subset accuracy
@@ -110,8 +111,8 @@ class DenStream:
         score : float
             Mean accuracy of self.predict(X) wrt. y.
         """
-        from sklearn.metrics import accuracy_score
-        return accuracy_score(y, self.predict(X), sample_weight=sample_weight)
+        # from sklearn.metrics import accuracy_score
+        # return accuracy_score(y, self.predict(X), sample_weight=sample_weight)
 
     def fit_predict(self, X, y=None, sample_weight=None):
         self.fit(X, y, sample_weight)
