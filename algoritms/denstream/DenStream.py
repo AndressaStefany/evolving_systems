@@ -92,25 +92,6 @@ class DenStream(BaseEstimator):
             self._partial_fit(sample, weight)
         return self
 
-    def score(self, X, y, sample_weight=None):
-        """
-        Return the Adjusted Rand Score on the given test data and labels.
-        Parameters
-        ----------
-        X : array-like of shape (n_samples, n_features)
-            Test samples.
-        y : array-like of shape (n_samples,) or (n_samples, n_outputs)
-            True labels for X.
-        sample_weight : array-like of shape (n_samples,), default=None
-            Sample weights.
-        Returns
-        -------
-        score : float
-            Adjusted Rand score of self.predict(X) wrt. y.
-        """
-        from sklearn.metrics import adjusted_rand_score
-        return adjusted_rand_score(y, self.fit_predict(X))
-
     def fit_predict(self, X, y=None, sample_weight=None):
         self.fit(X, y, sample_weight)
         return self.predict(X)
