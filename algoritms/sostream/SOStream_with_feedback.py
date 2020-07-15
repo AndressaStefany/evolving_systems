@@ -3,6 +3,7 @@ Code downloaded from:
 https://github.com/ruteee/SOStream
 '''
 import numpy as np
+import pandas as pd
 from algoritms.sostream.find_neighbors import find_neighbors
 from algoritms.sostream.find_overlap import find_overlap
 from algoritms.sostream.merge_clusters import merge_clusters
@@ -10,6 +11,7 @@ from algoritms.sostream.new_cluster import newCluster
 from algoritms.sostream.update_cluster import updateCluster
 from algoritms.sostream.utils import min_dist, dist
 from sklearn.base import BaseEstimator
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
 
 
 class SOStream_feedback(BaseEstimator):
@@ -54,6 +56,18 @@ class SOStream_feedback(BaseEstimator):
     def fit_predict(self, X):
         for r in X:
             self.process(r)
+
+    def get_predict(self):
+        labelencoder_X = LabelEncoder()
+
+        df_y_pred = pd.DataFrame(self.feedback, columns=['x', 'y'])
+        df_y_pred['x+y'] = df_y_pred['x'].astype(str) + \
+            '_'+df_y_pred['y'].astype(str)
+        df_y_pred['CLASS'] = labelencoder_X.fit_transform(
+            df_y_pred.values[:, 2])
+        df_y_pred = df_y_pred.drop(columns=['x+y'])
+
+        return df_y_pred['CLASS']
 
     def process(self, vt):
         winner_micro_cluster = min_dist(vt, self.M[-1])
