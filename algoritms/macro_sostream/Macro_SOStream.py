@@ -1,10 +1,12 @@
 import numpy as np
+import pandas as pd
 from algoritms.macro_sostream.find_neighbors import find_neighbors
 from algoritms.macro_sostream.find_overlap import find_overlap
 from algoritms.macro_sostream.merge_clusters import merge_clusters
 from algoritms.macro_sostream.new_cluster import newCluster
 from algoritms.macro_sostream.update_cluster import updateCluster
 from algoritms.macro_sostream.utils import min_dist, dist
+from sklearn.preprocessing import LabelEncoder
 
 
 class Macro_SOStream:
@@ -58,6 +60,17 @@ class Macro_SOStream:
     def fit_predict(self, X):
         for r in X.values:
             self.process(r)
+
+    def get_predict(self):
+        labelencoder_X = LabelEncoder()
+
+        df_y_pred = pd.DataFrame(self.class_centroids, columns=['x', 'y'])
+        df_y_pred['x+y'] = df_y_pred['x'].astype(str) + \
+            '_'+df_y_pred['y'].astype(str)
+        df_y_pred['CLASS'] = labelencoder_X.fit_transform(
+            df_y_pred.values[:, 2])
+
+        return df_y_pred['CLASS']
 
     def get_centroid_count(self):
         list_count = 0

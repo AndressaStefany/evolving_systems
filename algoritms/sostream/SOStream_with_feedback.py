@@ -10,7 +10,7 @@ from algoritms.sostream.merge_clusters import merge_clusters
 from algoritms.sostream.new_cluster import newCluster
 from algoritms.sostream.update_cluster import updateCluster
 from algoritms.sostream.utils import min_dist, dist
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from sklearn.preprocessing import LabelEncoder
 
 
 class SOStream_feedback:
@@ -64,7 +64,6 @@ class SOStream_feedback:
             '_'+df_y_pred['y'].astype(str)
         df_y_pred['CLASS'] = labelencoder_X.fit_transform(
             df_y_pred.values[:, 2])
-        df_y_pred = df_y_pred.drop(columns=['x+y'])
 
         return df_y_pred['CLASS']
 
