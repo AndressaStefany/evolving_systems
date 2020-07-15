@@ -10,10 +10,10 @@ from copy import copy
 from algoritms.denstream.MicroCluster import MicroCluster
 from math import ceil
 from sklearn.cluster import DBSCAN
-from sklearn.base import BaseEstimator
+# from sklearn.base import BaseEstimator
 
 
-class DenStream(BaseEstimator):
+class DenStream:
 
     def __init__(self, lambd=1, eps=1, beta=2, mu=2):
         """

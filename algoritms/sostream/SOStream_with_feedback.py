@@ -9,9 +9,10 @@ from algoritms.sostream.merge_clusters import merge_clusters
 from algoritms.sostream.new_cluster import newCluster
 from algoritms.sostream.update_cluster import updateCluster
 from algoritms.sostream.utils import min_dist, dist
+from sklearn.base import BaseEstimator
 
 
-class SOStream_feedback:
+class SOStream_feedback(BaseEstimator):
 
     def __init__(self, alpha=0.1, min_pts=10, merge_threshold=27000):
         """
