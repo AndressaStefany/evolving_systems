@@ -61,7 +61,7 @@ class Macro_SOStream:
         for r in X.values:
             self.process(r)
 
-    def get_predict(self):
+    def get_micro_predict(self):
         labelencoder_X = LabelEncoder()
 
         df_y_pred = pd.DataFrame(self.class_centroids, columns=['x', 'y'])
@@ -71,6 +71,10 @@ class Macro_SOStream:
             df_y_pred.values[:, 2])
 
         return df_y_pred['CLASS']
+
+    def get_macro_predict(self):
+        macroclusters = [c for c in self.class_lists]
+        return macroclusters
 
     def get_centroid_count(self):
         list_count = 0
