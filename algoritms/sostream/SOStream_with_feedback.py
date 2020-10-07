@@ -57,13 +57,16 @@ class SOStream_feedback:
             self.process(r)
 
     def get_predict(self):
-        labelencoder_X = LabelEncoder()
+        df_y_pred = pd.DataFrame(self.feedback)
 
-        df_y_pred = pd.DataFrame(self.feedback, columns=['x', 'y'])
-        df_y_pred['x+y'] = df_y_pred['x'].astype(str) + \
-            '_'+df_y_pred['y'].astype(str)
+        for col in df_y_pred.columns:
+            df_y_pred[col] = df_y_pred[col].astype('str')
+
+        df_y_pred['x+y'] = df_y_pred[df_y_pred.columns].agg('-'.join, axis=1)
+
+        labelencoder_X = LabelEncoder()
         df_y_pred['CLASS'] = labelencoder_X.fit_transform(
-            df_y_pred.values[:, 2])
+            df_y_pred.values[:, -1])
 
         return df_y_pred['CLASS']
 
