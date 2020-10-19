@@ -1,6 +1,7 @@
 from math import sqrt
 import numpy as np
 
+
 def dist(v1, v2):
     return np.sqrt(((v1 - v2) ** 2).sum())
 
@@ -17,5 +18,18 @@ def min_dist(vt, micro_clusters):
         if dist_to_micro_cluster <= micro_cluster_min_dist:
             micro_cluster_min_dist = dist_to_micro_cluster
             min_micro_cluster = micro_cluster
-    
+
     return min_micro_cluster
+
+
+def max_dist(vt, micro_clusters):
+    micro_cluster_max_dist = float('-inf')
+    max_micro_cluster = None
+    for micro_cluster in micro_clusters:
+        dist_to_micro_cluster = dist(vt, micro_cluster.centroid)
+
+        if (dist_to_micro_cluster > micro_cluster_max_dist) or ((round(dist_to_micro_cluster, 2) == round(micro_cluster_max_dist, 2)) and (micro_cluster.radius > max_micro_cluster.radius)):
+            micro_cluster_max_dist = dist_to_micro_cluster
+            max_micro_cluster = micro_cluster
+
+    return max_micro_cluster
