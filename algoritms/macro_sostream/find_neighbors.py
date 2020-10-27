@@ -1,18 +1,23 @@
 import numpy as np
 import pandas as pd
+
+# For production
 from algoritms.sostream.utils import dist
 
+# For test
+from utils import dist
 
-def find_neighbors(win_microcluster, min_pts, model_t, all_mclusters):
-    if len(model_t) >= min_pts:
+
+def find_neighbors(win_microcluster, min_pts, micro_list, all_microclusters):
+    if len(micro_list) >= min_pts:
         win_dist = []
         all_win_dist = []
-        for microcluster in model_t:
+        for microcluster in micro_list:
             # calculating all distances from the winner to the neighbors
             win_dist.append(dist(microcluster.centroid,
                                  win_microcluster.centroid))
 
-        for microcluster in all_mclusters:
+        for microcluster in all_microclusters:
             # calculating all distances from the winner to the neighbors
             all_win_dist.append(dist(microcluster.centroid,
                                      win_microcluster.centroid))
@@ -26,7 +31,7 @@ def find_neighbors(win_microcluster, min_pts, model_t, all_mclusters):
         # and the nearest microcluster
         k_dist = all_win_dist[min_pts-1]
         win_microcluster.radius = k_dist
-        win_nn = [model_t[idx] for idx in idx_microclusters[0:(min_pts)]]
+        win_nn = [micro_list[idx] for idx in idx_microclusters[0:(min_pts)]]
         return win_nn
     else:
         return []

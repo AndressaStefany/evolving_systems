@@ -1,5 +1,10 @@
+# For production
 from algoritms.sostream.utils import dist, weighted_mean
 from algoritms.sostream.micro_cluster import MicroCluster
+
+# For test
+# from utils import dist, weighted_mean
+# from micro_cluster import MicroCluster
 
 
 def merge_clusters(win_micro_cluster, overlaping_micro_clusters, merge_threshold):

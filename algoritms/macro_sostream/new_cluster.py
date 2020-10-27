@@ -1,14 +1,17 @@
-# from algoritms.sostream.micro_cluster import MicroCluster
-from micro_cluster import MicroCluster
-# from algoritms.sostream.macro_cluster import MacroCluster
-from macro_cluster import MacroCluster
+# For production
+from algoritms.sostream.micro_cluster import MicroCluster
+from algoritms.sostream.macro_cluster import MacroCluster
+
+# For test
+# from micro_cluster import MicroCluster
+# from macro_cluster import MacroCluster
 
 
-def new_cluster(vt):  # microcluster
+def new_microcluster(vt):
     return MicroCluster(vt)
 
 
-def new_macro_cluster(microcluster):
+def new_macrocluster(microcluster):
     centroid = microcluster.centroid
     number_micro_clusters = 1
     radius = microcluster.radius

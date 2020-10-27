@@ -1,13 +1,13 @@
 import unittest
 import numpy as np
-from new_cluster import new_cluster, new_macro_cluster
+from new_cluster import new_microcluster, new_macro_cluster
 from micro_cluster import MicroCluster
 from macro_cluster import MacroCluster
 
 
 class TestCreate(unittest.TestCase):
     def test_create_micro_cluster(self):
-        microcluster = new_cluster(np.array([2.2, 7]))
+        microcluster = new_microcluster(np.array([2.2, 7]))
         expected_microcluster = MicroCluster(np.array([2.2, 7]))
 
         np.testing.assert_array_equal(microcluster.centroid,
