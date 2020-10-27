@@ -5,7 +5,7 @@ import pandas as pd
 from algoritms.sostream.utils import dist
 
 # For test
-from utils import dist
+# from utils import dist
 
 
 def find_neighbors(win_microcluster, min_pts, micro_list, all_microclusters):
