@@ -9,8 +9,8 @@ from algoritms.sostream.utils import dist
 
 def find_overlap(win, win_nn):
     overlap = []
-    for microcluster in win_nn:
-        if win is not microcluster:
-            if dist(win.centroid, microcluster.centroid) - (win.radius + microcluster.radius) < 0:
-                overlap.append(microcluster)
+    for cluster in win_nn:
+        if win is not cluster:
+            if dist(win.centroid, cluster.centroid) - (win.radius + cluster.radius) < 0:
+                overlap.append(cluster)
     return overlap
