@@ -1,6 +1,6 @@
 # For production
-from algoritms.sostream.micro_cluster import MicroCluster
-from algoritms.sostream.macro_cluster import MacroCluster
+from algoritms.macro_sostream.micro_cluster import MicroCluster
+from algoritms.macro_sostream.macro_cluster import MacroCluster
 
 # For test
 # from micro_cluster import MicroCluster
