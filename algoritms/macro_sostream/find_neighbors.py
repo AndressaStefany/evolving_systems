@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 # For production
-from algoritms.sostream.utils import dist
+from algoritms.macro_sostream.utils import dist
 
 # For test
 # from utils import dist
