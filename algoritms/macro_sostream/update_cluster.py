@@ -2,7 +2,7 @@ from math import exp
 import numpy as np
 
 # For production
-from algoritms.sostream.utils import dist, max_dist
+from algoritms.macro_sostream.utils import dist, max_dist
 
 # For test
 # from utils import dist, max_dist
