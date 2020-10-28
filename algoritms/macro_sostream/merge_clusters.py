@@ -1,7 +1,7 @@
 # For production
-from algoritms.sostream.utils import dist, weighted_mean
-from algoritms.sostream.micro_cluster import MicroCluster
-from algoritms.sostream.macro_cluster import MacroCluster
+from algoritms.macro_sostream.utils import dist, weighted_mean
+from algoritms.macro_sostream.micro_cluster import MicroCluster
+from algoritms.macro_sostream.macro_cluster import MacroCluster
 
 # For test
 # from utils import dist, weighted_mean
