@@ -22,11 +22,11 @@ def min_dist(vt, micro_clusters):
     return min_micro_cluster
 
 
-def max_dist(vt, micro_clusters):
+def max_dist(macro_centroid, micro_clusters):
     micro_cluster_max_dist = float('-inf')
     max_micro_cluster = None
     for micro_cluster in micro_clusters:
-        dist_to_micro_cluster = dist(vt, micro_cluster.centroid)
+        dist_to_micro_cluster = dist(macro_centroid, micro_cluster.centroid)
 
         if (dist_to_micro_cluster > micro_cluster_max_dist) or ((round(dist_to_micro_cluster, 2) == round(micro_cluster_max_dist, 2)) and (micro_cluster.radius > max_micro_cluster.radius)):
             micro_cluster_max_dist = dist_to_micro_cluster

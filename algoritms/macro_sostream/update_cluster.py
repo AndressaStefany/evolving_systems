@@ -9,12 +9,11 @@ from algoritms.macro_sostream.utils import dist, max_dist
 
 
 def update_microcluster(macro_cluster, win_micro_cluster, vt, alpha, winner_neighborhood):
+
     win_micro_cluster.centroid = (win_micro_cluster.number_points *
                                   win_micro_cluster.centroid + vt) / (win_micro_cluster.number_points+1)
     win_micro_cluster.number_points += 1
     width_neighbor = win_micro_cluster.radius ** 2
-
-    centroids_micro = np.array([win_micro_cluster.centroid])
 
     for neighbor_micro_cluster in winner_neighborhood:
         influence = exp(-(dist(neighbor_micro_cluster.centroid,
@@ -22,8 +21,14 @@ def update_microcluster(macro_cluster, win_micro_cluster, vt, alpha, winner_neig
         neighbor_micro_cluster.centroid = neighbor_micro_cluster.centroid + alpha * \
             influence*(win_micro_cluster.centroid -
                        neighbor_micro_cluster.centroid)
+
+    centroids_micro = np.array([win_micro_cluster.centroid])
+    macro_cluster.micros.remove(win_micro_cluster)
+    for micro in macro_cluster.micros:
         centroids_micro = np.concatenate(
-            (centroids_micro, np.array([neighbor_micro_cluster.centroid])))
+            (centroids_micro, np.array([micro.centroid.copy()])))
+
+    macro_cluster.micros.append(win_micro_cluster)
 
     # update macro
     macro_cluster.centroid = np.median(centroids_micro, axis=0)
