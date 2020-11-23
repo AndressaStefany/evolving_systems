@@ -60,6 +60,7 @@ class Macro_SOStream:
         self.class_micro_centroids = []
         self.class_macro_lists = []
         self.idx_macro = 0
+        self.idx_macro_unique = [0]
 
     def fit_predict(self, X):
         for r in X.values:
@@ -118,25 +119,50 @@ class Macro_SOStream:
             pass
         pass
 
-    def check_macro_overlap(self, macrocluster, macro_list):
-        replace_idx = list()
+    def check_macro_overlap(self, microcluster, macro_list):
         merged_cluster = None
+        deleted_idx = None
+        other_micro = None
 
-        overlap = find_overlap(macrocluster, macro_list)
+        for i,m in enumerate(macro_list):
+            if (m is not macro_list[self.idx_macro]) and (i in self.idx_macro_unique):
+                # verify everything microclusters
+                other_micro = min_dist(microcluster.centroid, m.micros)
+                overlap = dist(microcluster.centroid, other_micro.centroid) - (microcluster.radius + other_micro.radius) <= self.merge_threshold
 
-        if len(overlap) > 0:
-            merged_cluster, deleted_clusters = merge_macroclusters(macrocluster,
-                                                                   overlap,
-                                                                   self.merge_threshold)
-            # To find the index this macroclusters
-            if merged_cluster is not None:
-                macro_list.append(merged_cluster)
-            if deleted_clusters is not None:
-                for deleted_cluster in deleted_clusters:
-                    replace_idx.append(macro_list.index(deleted_cluster))
-                    macro_list.remove(deleted_cluster)
+                if overlap:
+                    # merged macroclusters
+                    merged_cluster = merge_macroclusters(macro_list[self.idx_macro], macro_list[i])
+                    deleted_idx = i
+                    break
 
-        return replace_idx, merged_cluster
+        if merged_cluster is not None:
+            macro_list[self.idx_macro].valid = False
+            macro_list[self.idx_macro].micros = []
+            self.idx_macro_unique.remove(macro_list.index(macro_list[self.idx_macro]))
+
+            macro_list[deleted_idx].valid = False
+            macro_list[deleted_idx].micros = []
+            self.idx_macro_unique.remove(macro_list.index(macro_list[deleted_idx]))
+
+            self.idx_macro_unique.append(len(macro_list))
+            macro_list.append(merged_cluster)
+            
+
+            self.class_macro_lists = np.where(np.equal(self.class_macro_lists, deleted_idx),
+                                                macro_list.index(merged_cluster),
+                                                self.class_macro_lists)
+            self.class_macro_lists = np.where(np.equal(self.class_macro_lists, self.idx_macro),
+                                                macro_list.index(merged_cluster),
+                                                self.class_macro_lists)
+            try:
+                self.class_macro_lists = self.class_macro_lists.tolist()
+            except:
+                pass
+
+            self.idx_macro = self.idx_macro_unique[-1]
+            
+        return macro_list
 
     def check_point_cluster(self, vt, macro_list):
 
@@ -181,11 +207,14 @@ class Macro_SOStream:
                 pass
 
         elif (dist(vt, winner_microcluster.centroid) > self.p*(winner_microcluster.radius)) and (self.idx_macro < 10) and (macro_list[self.idx_macro].number_micro_clusters >= self.min_pts):
-            self.idx_macro += 1
-            if len(macro_list) > self.idx_macro:
+            try:
+                self.idx_macro = self.idx_macro_unique[self.idx_macro_unique.index(self.idx_macro)+1]
                 self.check_point_cluster(vt, macro_list)
-            else:
+            except:
                 # create new macrocluster
+                self.idx_macro_unique.append(len(macro_list))
+                self.idx_macro = self.idx_macro_unique[-1]
+
                 macro_list.append(new_macrocluster(new_microcluster(vt)))
                 self.class_micro_centroids.append(vt)
                 pass
@@ -193,7 +222,13 @@ class Macro_SOStream:
             self.class_micro_centroids.append(vt)
             update_macrocluster(
                 macro_list[self.idx_macro], new_microcluster(vt))
-        pass
+        
+        
+        if len(macro_list) > 1:
+            winner_microcluster = min_dist(vt, macro_list[self.idx_macro].micros)
+            macro_list = self.check_macro_overlap(winner_microcluster, macro_list)
+            
+        return macro_list
 
     def process(self, vt):
         """
@@ -203,11 +238,11 @@ class Macro_SOStream:
         ----------
         vt : numpy array, required
         """
-        self.idx_macro = 0
+        self.idx_macro = self.idx_macro_unique[0]
         new_macrocluster_list = self.macro_list[-1].copy()
 
         if (new_macrocluster_list) and (new_macrocluster_list[self.idx_macro].number_micro_clusters >= self.min_pts):
-            self.check_point_cluster(vt, new_macrocluster_list)
+            new_macrocluster_list = self.check_point_cluster(vt, new_macrocluster_list)
         else:
             self.class_micro_centroids.append(vt)
             if new_macrocluster_list:
@@ -215,30 +250,8 @@ class Macro_SOStream:
                     new_macrocluster_list[self.idx_macro], new_microcluster(vt))
             else:
                 # create a new microcluster and macrocluster
-                new_macrocluster_list.append(
-                    new_macrocluster(new_microcluster(vt)))
+                new_macrocluster_list.append(new_macrocluster(new_microcluster(vt)))
 
-        if self.idx_macro > 0:
-            replace_idx, merged_cluster = self.check_macro_overlap(
-                new_macrocluster_list[self.idx_macro], new_macrocluster_list)
-            if merged_cluster is not None:
-                # To replace of macroclusters indexes
-                for idx in replace_idx:
-                    self.class_macro_lists = np.where(np.equal(self.class_macro_lists, idx),
-                                                      new_macrocluster_list.index(
-                                                          merged_cluster),
-                                                      self.class_macro_lists)
-                try:
-                    self.class_macro_lists = self.class_macro_lists.tolist()
-                except:
-                    pass
-                self.class_macro_lists.append(
-                    new_macrocluster_list.index(merged_cluster))
-            # In this case, no merged macroclusters
-            else:
-                self.class_macro_lists.append(self.idx_macro)
-        else:
-            self.class_macro_lists.append(self.idx_macro)
-
+        self.class_macro_lists.append(self.idx_macro)
         self.macro_list.append(new_macrocluster_list)
     pass

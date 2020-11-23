@@ -5,5 +5,6 @@ class MacroCluster:
         self.number_micro_clusters = number_micro_clusters
         self.radius = radius
         self.micros = micros
+        self.valid = True
 
     pass
