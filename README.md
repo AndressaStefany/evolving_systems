@@ -1,5 +1,7 @@
 # Evolving Systems Library
 
+[![DOI](https://zenodo.org/badge/276922055.svg)](https://zenodo.org/badge/latestdoi/276922055)
+
 Python implementation of evolving algorithms.
 
 ## About
