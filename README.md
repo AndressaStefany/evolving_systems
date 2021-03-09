@@ -20,7 +20,7 @@ Initially, the algorithms added to the library perform data clustering.
     │   └── denstream      <- DenStream algorithm folder.
     │   └── sostream       <- SOStream algorithm folder.
     │   └── macro_sostream <- Macro SOStream algorithm folder, modification of SOStream.
-    │   └── autocloud      <- Autocloud algorithm folder.
+    │   └── autocloud      <- Auto-cloud algorithm folder.
     │
     ├── metrics            <- Scikit-learn purity, accuracy, recall and f1-score metrics.
     │   ├── __init__.py    <- Makes metrics a Python module.
